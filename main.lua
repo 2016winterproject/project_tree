@@ -18,13 +18,28 @@
 
 -- 안드로이드 풀 스크린 모드 여부
 local isAndroidFullScreen = true
+local SQLiteManager = require("SQLiteManager")
+local GameConfig = require("GameConfig")
 
 -- 이 함수가 시작점입니다. 나머지는 신경쓰지 마세요. (-:
 local function startApp()
 	require("CommonSettings")
 	
+
+	local exists = SQLiteManager.connectDB("data.db", system.DocumentsDirectory)
+	if not exists then -- DB 데이터 초기화
+		SQLiteManager.setConfig(GameConfig.DB_LEAF, 5)
+		SQLiteManager.setConfig(GameConfig.DB_MOHICAN, 0)
+		SQLiteManager.setConfig(GameConfig.DB_TREELEVEL, 1)
+		SQLiteManager.setConfig(GameConfig.DB_STAGELEVEL, 1)
+	end
+
+	GameConfig.init()
+
 	local composer = require "composer"
 	composer.gotoScene("MainSceneStarter")
+
+
 end
 
 --=======================================================--

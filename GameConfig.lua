@@ -64,7 +64,7 @@ Class.setLeaf = function (value)
 	_leaf = tonumber(value)
 
 	-- DB 업데이트
-	--SQLiteManager.setConfig(Class.DB_LEAF, _leaf)
+	SQLiteManager.setConfig(Class.DB_LEAF, _leaf)
 
 	local evt = {name="changeLeaf", leaf=_leaf}
 	Runtime:dispatchEvent(evt)
@@ -169,7 +169,7 @@ Class.setTreelevel = function (value)
 	_treelevel = tonumber(value)
 
 	-- DB 업데이트
-	--SQLiteManager.setConfig(Class.DB_TREELEVEL, _treelevel)
+	SQLiteManager.setConfig(Class.DB_TREELEVEL, _treelevel)
 
 	local evt = {name="changeTreelevel", treelevel=_treelevel}
 	Runtime:dispatchEvent(evt)
@@ -186,7 +186,7 @@ Class.setStagelevel = function (value)
 	_stagelevel = tonumber(value)
 
 	-- DB 업데이트
-	--SQLiteManager.setConfig(Class.DB_STAGELEVEL, _stagelevel)
+	SQLiteManager.setConfig(Class.DB_STAGELEVEL, _stagelevel)
 
 	local evt = {name="changeStagelevel", stagelevel=_stagelevel}
 	Runtime:dispatchEvent(evt)
@@ -254,15 +254,22 @@ end
 --========= 설정 초기화 Begin =========--
 Class.init = function ()
 	
-	_playerSkinType = tonumber(SQLiteManager.getConfig(Class.DB_PLAYER_SKIN_TYPE))
+	-- _playerSkinType = tonumber(SQLiteManager.getConfig(Class.DB_PLAYER_SKIN_TYPE))
 	
 	_leaf = tonumber(SQLiteManager.getConfig(Class.DB_LEAF))
-	_treemilk = tonumber(SQLiteManager.getConfig(Class.DB_TREEMILK))
-	_techmilk = tonumber(SQLiteManager.getConfig(Class.DB_TECHMILK))
-	_nummilk = tonumber(SQLiteManager.getConfig(Class.DB_NUMMILK))
+	-- _treemilk = tonumber(SQLiteManager.getConfig(Class.DB_TREEMILK))
+	-- _techmilk = tonumber(SQLiteManager.getConfig(Class.DB_TECHMILK))
+	-- _nummilk = tonumber(SQLiteManager.getConfig(Class.DB_NUMMILK))
 	_mohican = tonumber(SQLiteManager.getConfig(Class.DB_MOHICAN))
-	_archer = tonumber(SQLiteManager.getConfig(Class.DB_ARCHER))
+	-- _archer = tonumber(SQLiteManager.getConfig(Class.DB_ARCHER))
 	_treelevel = tonumber(SQLiteManager.getConfig(Class.DB_TREELEVEL))
+	_stagelevel = tonumber(SQLiteManager.getConfig(Class.DB_STAGELEVEL))
+
+ -- 	_leaf = 5
+	-- _mohican = 0
+	-- _treelevel = 1
+	-- _stagelevel = 1
+
 
 	_isPaused = false
 

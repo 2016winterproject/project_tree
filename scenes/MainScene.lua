@@ -2,6 +2,7 @@
 
 local commonConfig = require("CommonSettings")
 local widget = require("widget")
+local gameConfig = require("GameConfig")
 
 
 
@@ -59,9 +60,9 @@ createUi = function( sceneGroup)
 	--			params = nil
 	}
 
-	local buttonStart = display.newImage(sceneGroup,"images/test_button.png",0,0)	
-	__setScaleFactor(buttonStart)
-	buttonStart.x, buttonStart.y = 10, __appContentHeight__ - buttonStart.height - 10
+	local buttonStart = display.newImage(sceneGroup,"images/start_button.png",0,0)	
+	__setScaleFactor(buttonStart,0.3)
+	buttonStart.x, buttonStart.y = __appContentWidth__*0.5 - (buttonStart.width*0.5), __appContentHeight__ *0.7
 
 	-- local buttonStart = widget.newButton({
 	-- 	left= 50,
@@ -90,25 +91,29 @@ createUi = function( sceneGroup)
 	buttonStart:addEventListener("tap", on_ButtonStart)
 
 
-	local buttonTest = widget.newButton({
-		left = 50,
-		top = 100,
-		id = "test",
-		label ="test",
-		onEvent = on_ButtonTest
-		})
+	-- local buttonTest = widget.newButton({sceneGroup,
+	-- 	left = 50,
+	-- 	top = 100,
+	-- 	id = "test",
+	-- 	label ="test",
+	-- 	onEvent = on_ButtonTest
+	-- 	})
 
-	local function on_ButtonTest(e)
+	-- local buttonEnd = display.newImage(sceneGroup, "images/end_button.png",0,0)
+	-- __setScaleFactor(buttonEnd,0.3)
+	-- buttonEnd.x , buttonEnd.y = __appContentWidth__*0.5-(buttonEnd.width*0.5) , __appContentHeight__*0.7
+
+	-- local function on_ButtonEnd(e)
 		
-		local currScene = composer.getSceneName("current")
-		composer.removeScene(currScene)
-		composer.gotoScene("scenes.TestScene",options)
+	-- 	local currScene = composer.getSceneName("current")
+	-- 	composer.removeScene(currScene)
+	-- 	composer.gotoScene("scenes.TestScene",options)
 		
 
-		-- body
-	end
+	-- 	-- body
+	-- end
 
-	buttonTest:addEventListener("tap",on_ButtonTest)
+	-- buttonEnd:addEventListener("tap",on_ButtonEnd)
 end
 return scene
 --##############################  Main Code End  ##############################--

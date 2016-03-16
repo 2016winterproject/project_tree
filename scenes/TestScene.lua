@@ -1,19 +1,17 @@
 --##############################  Main Code Begin  ##############################--
 
-local commonConfig = require("CommonSettings")
+--local commonConfig = require("CommonSettings")
 local Mohican = require("scenes.character.Mohican")
 local Ice = require("scenes.character.Ice")
 local tree = require("scenes.character.tree")
 local physics = require("physics")
 local GameConfig = require("GameConfig")
 local EnterFrameManager = require("EnterFrameManager")
-
+--GameConfig.init()
 local createBg, createUi, createMohican, createEnemy, gameOver , stageClear
-GameConfig.setStagelevel(1)
-GameConfig.setLeaf(0)	
 GameConfig.setScore(0)
-GameConfig.setTreelevel(1)
 local level = GameConfig.getStagelevel()
+local numMohican = GameConfig.getMohican()
 local numEnemy = level*level
 local deadEnemy = 0 
 local hp_tree=90+GameConfig.getTreelevel()*10
@@ -82,16 +80,30 @@ end
 
 createUi = function(sceneGroup)
 
-	local btn_mohican = display.newImage(sceneGroup,"images/test_button.png")
-	__setScaleFactor(btn_mohican,0.3)
+	local btn_mohican = display.newImage(sceneGroup,"images/head_mohican.png")
+	__setScaleFactor(btn_mohican,0.2)
 
-	btn_mohican.x, btn_mohican.y = __appContentWidth__*0.7, __appContentHeight__*0.9
+	btn_mohican.x, btn_mohican.y = __appContentWidth__*0.2, 0
 
 	local function on_ButtonMohican(e)
 
-		createMohican(sceneGroup)
+		if( numMohican > 0) then
+			createMohican(sceneGroup)
+			numMohican = numMohican-1
+			GameConfig.setMohican(numMohican)	
+		end
+		
 	end
 	btn_mohican:addEventListener("tap", on_ButtonMohican)
+
+	local numMohicanTxt = display.newText(sceneGroup,tostring(numMohican),btn_mohican.width+btn_mohican.x+10,0,0,0,native.systemFontBold,21)
+	--numMohicanTxt.y = btn_mohican.height *0.5 
+	numMohicanTxt:setFillColor(1,0,0,1)
+
+	local function on_ChangeMohicanTest( e )
+		numMohicanTxt.text = tostring(e.mohican)
+	end
+	Runtime:addEventListener("changeMohican",on_ChangeMohicanTest)
 
 
 	local hpbar = display.newGroup()
@@ -192,6 +204,10 @@ createEnemy = function ( sceneGroup)
 				event.target.dead =true
 				event.target.destroy()
 
+				deadEnemy = deadEnemy +1
+				if deadEnemy == numEnemy then
+					stageClear(sceneGroup,GameConfig.getScore(),hp_tree)
+				end
 				if( event.other.hp <10)then
 					gameOver()
 				end
@@ -305,15 +321,19 @@ stageClear = function(sceneGroup, score, hp)
 	__setScaleFactor(leaf,0.2)
 	leaf.x =clearTitle.x
 
-	print(score, hp)
-	local numLeaf = GameConfig.getLeaf() + score/10 + hp/10
-	GameConfig.setLeaf(numleaf)
+	
+	local numLeaf =  score/10 + hp/10
+	
 	local resLeaf = display.newText(mainG,numLeaf,0,0,0,0,native.systemFontBold,18)
 	resLeaf.y = leaf.y
 	resLeaf.x = leaf.x + 100
 
-	local btn_continue = display.newImage(mainG,"images/test_button.png",0,leaf.y+leaf.height+45)
-	__setScaleFactor(btn_continue,0.3)
+	numLeaf = GameConfig.getLeaf() + numLeaf
+	GameConfig.setLeaf(numLeaf)
+	GameConfig.setStagelevel(level+1)
+
+	local btn_continue = display.newText(mainG,"continue",0,leaf.y+leaf.height+45,0,0,native.systemFontBold,20)
+	--__setScaleFactor(btn_continue,0.3)
 	btn_continue.x = (__appContentWidth__ *0.5) - (btn_continue.width*0.5)
 
 	local function on_ButtonContinue( e )
